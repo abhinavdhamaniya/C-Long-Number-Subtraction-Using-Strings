@@ -1,0 +1,96 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+string subtract(string s1, string s2)
+{
+    if(s2.length()>s1.length())
+    {
+        string temp=s1;
+        s1=s2;
+        s2=temp;
+    }
+    else if(s1.length()==s2.length())
+    {
+        bool s1bigger=true;
+
+        for(int i=0; i<s1.length(); i++)
+        {
+            int f= s1[i]-'0';
+            int s= s2[i]-'0';
+            if(f<s)
+            {
+                s1bigger=false;
+                break;
+            }
+            else if(f>s) continue;
+            else if(f==s) continue;
+        }
+        if(!s1bigger)
+        {
+            string temp=s1;
+            s1=s2;
+            s2=temp;
+        }
+    }
+
+    string res="";
+
+    int ldiff= s1.length()-s2.length();
+    for(int i=0; i<ldiff; i++) s2= "0"+s2;
+    bool carry=false;
+
+    for(int i=s1.length()-1; i>=0; i--)
+    {
+
+        int first= s1[i]-'0';
+        int sec= s2[i]-'0';
+
+        if(carry && first!=0)
+        {
+            first--;
+            carry=false;
+        }
+        else if(carry && first==0)
+        {
+            first=9;
+            carry=true;
+        }
+
+
+        if(first<sec)
+        {
+            string sfirst= to_string(first);
+            sfirst= "1"+sfirst;
+            first= stoi(sfirst);
+            carry=true;
+            int tdiff= first-sec;
+            res= to_string(tdiff)+ res;
+        }
+        else{
+            int tdiff= first-sec;
+            res= to_string(tdiff)+ res;
+        }
+    }
+
+    string finalres="";
+    bool flag=false;
+    for(int i=0; i<res.length(); i++)
+    {
+        if(res[i]=='0' && !flag)
+        {
+            continue;
+        }
+        else
+        {
+            flag=true;
+            finalres+= res.substr(i,1);
+        }
+    }
+
+    return finalres;
+}
+
+int main()
+{
+	cout<<subtract("110", "111");
+}
